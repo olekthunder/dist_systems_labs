@@ -45,3 +45,38 @@ printLine();
 
 // All distinct producers
 print(`Distinct producers are: ${db.items.distinct("producer").join(', ')}`);
+
+printLine();
+
+// iPhone 6 becomes iPhone 6+ - removed headphones, eco-friendly
+// Achieved via data aggregation pipeline
+db.items.update(
+    {
+        model: /iPhone/
+    },
+    [
+        {
+            "$set": {
+                "model": { "$concat": ["$model", "+"] },
+                "isOverpriced": true,
+            },
+        }
+    ],
+    { multi: true }
+);
+// print iPhones
+print('IPhone items')
+db.items.find({ model: /iPhone/ }).forEach(printjson);
+
+printLine();
+
+// Get all out of stock items
+print('Overpriced items')
+const overpricedItems = db.items.find({ isOverpriced: { "$exists": true } });
+overpricedItems.forEach((item) => {
+    db.items.update(
+        { _id: item._id },
+        { "$inc": { "price": 100 } },
+    );
+})
+db.items.find({ isOverpriced: { "$exists": true } }).forEach(printjson);

@@ -11,28 +11,34 @@ db.createUser({
 
 const items = [
     {
-        "category" : "Phone",
-        "model" : "iPhone 6",
-        "producer" : "Apple",
-        "price" : 600
+        "category": "Phone",
+        "model": "iPhone 6",
+        "producer": "Apple",
+        "price": 600
     },
     {
-        "category" : "TV",
-        "model" : "MySuperTvModel 6s",
-        "producer" : "SamSong",
-        "outOfStock": true,
+        "category": "Phone",
+        "model": "iPhone 7",
+        "producer": "Apple",
+        "price": 700
     },
     {
-        "category" : "Smart Watch",
-        "model" : "SamSong Galactic Watch",
-        "producer" : "SamSong",
-        "price" : 400
+        "category": "TV",
+        "model": "MySuperTvModel 6s",
+        "producer": "SamSong",
+        "outOfStock": true,  // No price
     },
     {
-        "category" : "Smart Watch",
-        "model" : "Peach Watch 2",
-        "producer" : "Peach",
-        "price" : 300
+        "category": "Smart Watch",
+        "model": "SamSong Galactic Watch",
+        "producer": "SamSong",
+        "price": 400
+    },
+    {
+        "category": "Smart Watch",
+        "model": "Peach Watch 2",
+        "producer": "Peach",
+        "price": 300
     },
 ];
 db.items.insertMany(items);
