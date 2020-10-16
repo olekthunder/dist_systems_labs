@@ -20,3 +20,9 @@ make lab1
 ```
 
 You also can find some info regarding lab inside lab directory
+
+# Cleanup
+
+```
+make down
+```

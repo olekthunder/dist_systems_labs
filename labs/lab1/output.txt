@@ -1,0 +1,373 @@
+All items
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec462"),
+	"category" : "Phone",
+	"model" : "iPhone 6",
+	"producer" : "Apple",
+	"price" : 600
+}
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec463"),
+	"category" : "Phone",
+	"model" : "iPhone 12",
+	"producer" : "Apple",
+	"price" : 700
+}
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec464"),
+	"category" : "TV",
+	"model" : "MySuperTvModel 6s",
+	"producer" : "SamSong",
+	"outOfStock" : true
+}
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec465"),
+	"category" : "Smart Watch",
+	"model" : "SamSong Galactic Watch",
+	"producer" : "SamSong",
+	"price" : 400
+}
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec466"),
+	"category" : "Smart Watch",
+	"model" : "Peach Watch 2",
+	"producer" : "Peach",
+	"price" : 300
+}
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec467"),
+	"category" : "Charger",
+	"model" : "iCharger",
+	"producer" : "Apple",
+	"price" : 700
+}
+--------------------------------------------------------------------------------
+Smart Watches count: 2
+--------------------------------------------------------------------------------
+Distinct categories: 4
+--------------------------------------------------------------------------------
+400 <= price <= 400
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec465"),
+	"category" : "Smart Watch",
+	"model" : "SamSong Galactic Watch",
+	"producer" : "SamSong",
+	"price" : 400
+}
+--------------------------------------------------------------------------------
+SELECT * FROM items WHERE producer IN ('Apple', 'SamSong')
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec462"),
+	"category" : "Phone",
+	"model" : "iPhone 6",
+	"producer" : "Apple",
+	"price" : 600
+}
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec463"),
+	"category" : "Phone",
+	"model" : "iPhone 12",
+	"producer" : "Apple",
+	"price" : 700
+}
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec464"),
+	"category" : "TV",
+	"model" : "MySuperTvModel 6s",
+	"producer" : "SamSong",
+	"outOfStock" : true
+}
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec465"),
+	"category" : "Smart Watch",
+	"model" : "SamSong Galactic Watch",
+	"producer" : "SamSong",
+	"price" : 400
+}
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec467"),
+	"category" : "Charger",
+	"model" : "iCharger",
+	"producer" : "Apple",
+	"price" : 700
+}
+--------------------------------------------------------------------------------
+Distinct producers are: Apple, Peach, SamSong
+--------------------------------------------------------------------------------
+IPhone items
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec462"),
+	"category" : "Phone",
+	"model" : "iPhone 6+",
+	"producer" : "Apple",
+	"price" : 600,
+	"isOverpriced" : true
+}
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec463"),
+	"category" : "Phone",
+	"model" : "iPhone 12+",
+	"producer" : "Apple",
+	"price" : 700,
+	"isOverpriced" : true
+}
+--------------------------------------------------------------------------------
+Overpriced items
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec462"),
+	"category" : "Phone",
+	"model" : "iPhone 6+",
+	"producer" : "Apple",
+	"price" : 700,
+	"isOverpriced" : true
+}
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec463"),
+	"category" : "Phone",
+	"model" : "iPhone 12+",
+	"producer" : "Apple",
+	"price" : 800,
+	"isOverpriced" : true
+}
+--------------------------------------------------------------------------------
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec468"),
+	"order_number" : 1,
+	"date" : ISODate("2015-04-14T00:00:00Z"),
+	"total_sum" : 1300,
+	"customer" : {
+		"name" : "Andrii",
+		"surname" : "Rodinov",
+		"phones" : [
+			9876543,
+			1234567
+		],
+		"address" : "PTI, Peremohy 37, Kyiv, UA"
+	},
+	"payment" : {
+		"card_owner" : "Andrii Rodionov",
+		"cardId" : 12345678
+	},
+	"order_items_id" : [
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec462")),
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec463"))
+	]
+}
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec469"),
+	"order_number" : 2,
+	"date" : ISODate("2018-04-14T00:00:00Z"),
+	"total_sum" : 600,
+	"customer" : {
+		"name" : "Neandrii",
+		"surname" : "Nerodinov",
+		"phones" : [
+			9875644,
+			1234568
+		],
+		"address" : "PTI, Peremohy 38, Kyiv, UA"
+	},
+	"payment" : {
+		"card_owner" : "Neandrii Nerodionov",
+		"cardId" : 12345679
+	},
+	"order_items_id" : [
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec462")),
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec464"))
+	]
+}
+--------------------------------------------------------------------------------
+Orders with total_sum > 700
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec468"),
+	"order_number" : 1,
+	"date" : ISODate("2015-04-14T00:00:00Z"),
+	"total_sum" : 1300,
+	"customer" : {
+		"name" : "Andrii",
+		"surname" : "Rodinov",
+		"phones" : [
+			9876543,
+			1234567
+		],
+		"address" : "PTI, Peremohy 37, Kyiv, UA"
+	},
+	"payment" : {
+		"card_owner" : "Andrii Rodionov",
+		"cardId" : 12345678
+	},
+	"order_items_id" : [
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec462")),
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec463"))
+	]
+}
+--------------------------------------------------------------------------------
+Andrii Rodinov orders:
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec468"),
+	"order_number" : 1,
+	"date" : ISODate("2015-04-14T00:00:00Z"),
+	"total_sum" : 1300,
+	"customer" : {
+		"name" : "Andrii",
+		"surname" : "Rodinov",
+		"phones" : [
+			9876543,
+			1234567
+		],
+		"address" : "PTI, Peremohy 37, Kyiv, UA"
+	},
+	"payment" : {
+		"card_owner" : "Andrii Rodionov",
+		"cardId" : 12345678
+	},
+	"order_items_id" : [
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec462")),
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec463"))
+	]
+}
+--------------------------------------------------------------------------------
+Orders with MySuperTvModel 6s
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec469"),
+	"order_number" : 2,
+	"date" : ISODate("2018-04-14T00:00:00Z"),
+	"total_sum" : 600,
+	"customer" : {
+		"name" : "Neandrii",
+		"surname" : "Nerodinov",
+		"phones" : [
+			9875644,
+			1234568
+		],
+		"address" : "PTI, Peremohy 38, Kyiv, UA"
+	},
+	"payment" : {
+		"card_owner" : "Neandrii Nerodionov",
+		"cardId" : 12345679
+	},
+	"order_items_id" : [
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec462")),
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec464"))
+	]
+}
+--------------------------------------------------------------------------------
+Orders with charger for iPhone
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec468"),
+	"order_number" : 1,
+	"date" : ISODate("2015-04-14T00:00:00Z"),
+	"total_sum" : 2000,
+	"customer" : {
+		"name" : "Andrii",
+		"surname" : "Rodinov",
+		"phones" : [
+			9876543,
+			1234567
+		],
+		"address" : "PTI, Peremohy 37, Kyiv, UA"
+	},
+	"payment" : {
+		"card_owner" : "Andrii Rodionov",
+		"cardId" : 12345678
+	},
+	"order_items_id" : [
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec462")),
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec463")),
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec467"))
+	]
+}
+{
+	"_id" : ObjectId("5f8a0dd789208fcc361ec469"),
+	"order_number" : 2,
+	"date" : ISODate("2018-04-14T00:00:00Z"),
+	"total_sum" : 1300,
+	"customer" : {
+		"name" : "Neandrii",
+		"surname" : "Nerodinov",
+		"phones" : [
+			9875644,
+			1234568
+		],
+		"address" : "PTI, Peremohy 38, Kyiv, UA"
+	},
+	"payment" : {
+		"card_owner" : "Neandrii Nerodionov",
+		"cardId" : 12345679
+	},
+	"order_items_id" : [
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec462")),
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec464")),
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec467"))
+	]
+}
+--------------------------------------------------------------------------------
+Total items in order: 3
+3
+--------------------------------------------------------------------------------
+Customer and credit card for orders where total_sum > 700
+{
+	"customer" : {
+		"name" : "Andrii",
+		"surname" : "Rodinov",
+		"phones" : [
+			9876543,
+			1234567
+		],
+		"address" : "PTI, Peremohy 37, Kyiv, UA"
+	},
+	"payment" : {
+		"cardId" : 12345678
+	}
+}
+{
+	"customer" : {
+		"name" : "Neandrii",
+		"surname" : "Nerodinov",
+		"phones" : [
+			9875644,
+			1234568
+		],
+		"address" : "PTI, Peremohy 38, Kyiv, UA"
+	},
+	"payment" : {
+		"cardId" : 12345679
+	}
+}
+--------------------------------------------------------------------------------
+Target item id to remove: ObjectId("5f8a0dd789208fcc361ec462")
+Order items by number:
+{
+	"order_number" : 1,
+	"order_items_id" : [
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec463")),
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec467"))
+	]
+}
+{
+	"order_number" : 2,
+	"order_items_id" : [
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec464")),
+		DBRef("items", ObjectId("5f8a0dd789208fcc361ec467"))
+	]
+}
+--------------------------------------------------------------------------------
+All customers after surname update:
+{
+	"name" : "Andrii",
+	"surname" : "<CENSORED>",
+	"phones" : [
+		9876543,
+		1234567
+	],
+	"address" : "PTI, Peremohy 37, Kyiv, UA"
+}
+{
+	"name" : "Neandrii",
+	"surname" : "<CENSORED>",
+	"phones" : [
+		9875644,
+		1234568
+	],
+	"address" : "PTI, Peremohy 38, Kyiv, UA"
+}
