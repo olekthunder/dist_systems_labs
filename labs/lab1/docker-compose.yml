@@ -2,6 +2,6 @@ version: "3"
 
 services:
   lab1:
-    build: ./labs/lab1
+    build: .
     ports: 
       - "27017:27017"
