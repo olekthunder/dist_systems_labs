@@ -3,5 +3,6 @@ version: "3"
 services:
   lab1:
     build: .
+    container_name: lab1
     ports: 
       - "27017:27017"
