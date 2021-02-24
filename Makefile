@@ -13,6 +13,14 @@ lab2:
 	cd labs/lab2; \
 	docker-compose up -d --build lab2; \
 	docker exec -it lab2 /bin/bash -c "./wait-for-it.sh localhost:7687 \
-		&& cypher-shell -u neo4j -p test -f commands.cypher"; \
-	docker-compose down; \
+		&& cypher-shell -u neo4j -p test -f commands.cypher" \
+		&& echo "Browser running at localhost:7474, user: neo4j, pass: test"; \
 	cd $(ROOT_DIR);
+
+clean:
+	for n in 1 2; do \
+		cd "labs/lab$$n"; \
+		pwd; \
+		docker-compose down; \
+		cd $(ROOT_DIR); \
+	done
