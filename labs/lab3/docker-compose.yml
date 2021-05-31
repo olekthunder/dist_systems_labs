@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  lab3:
+    image: cassandra
+    container_name: lab3
+    # command: "cassandra"
+  
+  cqlsh:
+    build:
+      context: .
+      dockerfile: Dockerfile.cqlsh
+
+# networks:
+#   dc1ring:
+#       ipam:
+#           driver: default
+#           config:
+#               - subnet: 172.30.0.0/16
