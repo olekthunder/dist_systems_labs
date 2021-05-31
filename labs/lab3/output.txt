@@ -1,0 +1,267 @@
+cd labs/lab3; \
+docker-compose up -d lab3 \
+&& docker-compose run cqlsh bin/bash -c "./wait-for-it.sh lab3:9042 && cqlsh lab3 -f commands.cql" \
+&& docker-compose run cqlsh bin/bash -c "cqlsh lab3 -f queries.cql" \
+cd /home/olekthunder/git-repos/dist_systems_labs;
+latest: Pulling from library/cassandra
+Digest: sha256:63dcb2b3f41ddac9af81da71db66fc61b03a069eb4fcd7fdf065d33116752fb9
+Status: Downloaded newer image for cassandra:latest
+Step 1/4 : FROM cassandra
+ ---> 132406477368
+Step 2/4 : COPY wait-for-it.sh .
+ ---> bdc6856fcec8
+Step 3/4 : COPY commands.cql .
+ ---> ddbdb189438f
+Step 4/4 : COPY queries.cql .
+ ---> fbf09482ef51
+
+Successfully built fbf09482ef51
+Successfully tagged lab3_cqlsh:latest
+wait-for-it.sh: waiting 15 seconds for lab3:9042
+wait-for-it.sh: lab3:9042 is available after 10 seconds
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+ [applied]
+-----------
+      True
+
+CREATE TABLE lab3.items (
+    category text,
+    price int,
+    id int,
+    name text,
+    params map<text, text>,
+    producer text,
+    PRIMARY KEY (category, price, id)
+) WITH CLUSTERING ORDER BY (price ASC, id ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'chunk_length_in_kb': '64', 'class': 'org.apache.cassandra.io.compress.LZ4Compressor'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 0
+    AND gc_grace_seconds = 864000
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+CREATE INDEX name_idx ON lab3.items (name);
+CREATE INDEX e_params_idx ON lab3.items (entries(params));
+CREATE INDEX params_idx ON lab3.items (keys(params));
+CREATE INDEX producer_idx ON lab3.items (producer);
+CREATE INDEX v_params_idx ON lab3.items (values(params));
+
+
+ category  | price | id | name  | params          | producer
+-----------+-------+----+-------+-----------------+-----------
+ Category1 |   250 |  4 | Item4 | {'param1': '3'} | Producer2
+ Category1 |   300 |  1 | Item1 | {'param1': '1'} | Producer1
+ Category1 |   500 |  2 | Item2 | {'param1': '2'} | Producer1
+ Category1 |   500 |  3 | Item3 | {'param1': '2'} | Producer2
+
+(4 rows)
+
+ category  | price | id | name  | params          | producer
+-----------+-------+----+-------+-----------------+-----------
+ Category1 |   300 |  1 | Item1 | {'param1': '1'} | Producer1
+
+(1 rows)
+
+ category  | price | id | name  | params            | producer
+-----------+-------+----+-------+-------------------+-----------
+ Category5 |   500 |  9 | Item9 | {'param5': '567'} | Producer4
+
+(1 rows)
+
+ category  | price | id | name  | params                                  | producer
+-----------+-------+----+-------+-----------------------------------------+-----------
+ Category2 |   800 |  6 | Item6 | {'param1': '4', 'param2': 'param2_val'} | Producer3
+
+(1 rows)
+
+ category  | price | id | name  | params          | producer
+-----------+-------+----+-------+-----------------+-----------
+ Category1 |   250 |  4 | Item4 | {'param1': '3'} | Producer2
+ Category1 |   300 |  1 | Item1 | {'param1': '1'} | Producer1
+ Category1 |   500 |  2 | Item2 | {'param1': '2'} | Producer1
+ Category1 |   500 |  3 | Item3 | {'param1': '2'} | Producer2
+
+(4 rows)
+
+ category  | price | id | name  | params          | producer
+-----------+-------+----+-------+-----------------+-----------
+ Category1 |   500 |  2 | Item2 | {'param1': '2'} | Producer1
+ Category1 |   500 |  3 | Item3 | {'param1': '2'} | Producer2
+
+(2 rows)
+
+CREATE TABLE lab3.orders (
+    customer text,
+    dt timestamp,
+    order_id int,
+    items_list list<int>,
+    sum int,
+    PRIMARY KEY (customer, dt, order_id)
+) WITH CLUSTERING ORDER BY (dt ASC, order_id ASC)
+    AND bloom_filter_fp_chance = 0.01
+    AND caching = {'keys': 'ALL', 'rows_per_partition': 'NONE'}
+    AND comment = ''
+    AND compaction = {'class': 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy', 'max_threshold': '32', 'min_threshold': '4'}
+    AND compression = {'chunk_length_in_kb': '64', 'class': 'org.apache.cassandra.io.compress.LZ4Compressor'}
+    AND crc_check_chance = 1.0
+    AND dclocal_read_repair_chance = 0.1
+    AND default_time_to_live = 0
+    AND gc_grace_seconds = 864000
+    AND max_index_interval = 2048
+    AND memtable_flush_period_in_ms = 0
+    AND min_index_interval = 128
+    AND read_repair_chance = 0.0
+    AND speculative_retry = '99PERCENTILE';
+CREATE INDEX items_list_idx ON lab3.orders (values(items_list));
+
+
+ customer  | dt                              | order_id | items_list | sum
+-----------+---------------------------------+----------+------------+------
+ Customer5 | 2020-11-04 00:00:00.000000+0000 |        5 |       [10] | 1200
+ Customer5 | 2020-11-05 00:00:00.000000+0000 |        6 |        [5] | 1000
+
+(2 rows)
+
+ customer  | dt                              | order_id | items_list | sum
+-----------+---------------------------------+----------+------------+------
+ Customer5 | 2020-11-05 00:00:00.000000+0000 |        6 |        [5] | 1000
+
+(1 rows)
+
+ count
+-------
+     2
+
+(1 rows)
+
+ customer  | system.avg(sum)
+-----------+-----------------
+ Customer3 |            2800
+ Customer1 |            1500
+ Customer4 |             800
+ Customer5 |            1100
+ Customer2 |            4650
+
+(5 rows)
+
+Warnings :
+Aggregation query used without partition key
+
+
+ customer  | system.sum(sum)
+-----------+-----------------
+ Customer3 |            2800
+ Customer1 |            1500
+ Customer4 |             800
+ Customer5 |            2200
+ Customer2 |            4650
+
+(5 rows)
+
+Warnings :
+Aggregation query used without partition key
+
+
+ customer  | system.max(sum)
+-----------+-----------------
+ Customer3 |            2800
+ Customer1 |            1500
+ Customer4 |             800
+ Customer5 |            1200
+ Customer2 |            4650
+
+(5 rows)
+
+Warnings :
+Aggregation query used without partition key
+
+
+ customer  | sum  | dt                              | writetime(sum)
+-----------+------+---------------------------------+------------------
+ Customer3 | 2800 | 2020-11-02 00:00:00.000000+0000 | 1622470458707000
+ Customer1 | 1500 | 2020-11-01 00:00:00.000000+0000 | 1622470458681000
+ Customer4 |  800 | 2020-11-03 00:00:00.000000+0000 | 1622470458718000
+ Customer5 | 1200 | 2020-11-04 00:00:00.000000+0000 | 1622470458729000
+ Customer5 | 1500 | 2020-11-05 00:00:00.000000+0000 | 1622470460741513
+ Customer2 | 4650 | 2020-11-01 00:00:00.000000+0000 | 1622470458694000
+
+(6 rows)
+
+ [json]
+------------------------------------------------------------------------------------------------------------------------
+      {"order_id": 3, "customer": "Customer3", "sum": 2800, "dt": "2020-11-02 00:00:00.000Z", "items_list": [5, 8, 10]}
+       {"order_id": 1, "customer": "Customer1", "sum": 1500, "dt": "2020-11-01 00:00:00.000Z", "items_list": [1, 2, 3]}
+           {"order_id": 4, "customer": "Customer4", "sum": 800, "dt": "2020-11-03 00:00:00.000Z", "items_list": [1, 2]}
+            {"order_id": 5, "customer": "Customer5", "sum": 1200, "dt": "2020-11-04 00:00:00.000Z", "items_list": [10]}
+          {"order_id": 6, "customer": "Customer5", "sum": 1500, "dt": "2020-11-05 00:00:00.000Z", "items_list": [5, 2]}
+              {"order_id": 7, "customer": "Customer7", "sum": 300, "dt": "2020-11-14 00:00:00.000Z", "items_list": [1]}
+ {"order_id": 2, "customer": "Customer2", "sum": 4650, "dt": "2020-11-01 00:00:00.000Z", "items_list": [4, 5, 6, 7, 8]}
+
+(7 rows)

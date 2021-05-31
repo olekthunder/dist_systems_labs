@@ -20,7 +20,8 @@ lab2:
 lab3:
 	cd labs/lab3; \
 	docker-compose up -d lab3 \
-	&& docker-compose run cqlsh bin/bash -c "./wait-for-it.sh lab3:7000 && cqlsh lab3"; \
+	&& docker-compose run cqlsh bin/bash -c "./wait-for-it.sh lab3:9042 && cqlsh lab3 -f commands.cql" \
+	&& docker-compose run cqlsh bin/bash -c "cqlsh lab3 -f queries.cql" \
 	cd $(ROOT_DIR);
 
 

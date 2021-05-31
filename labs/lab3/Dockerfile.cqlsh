@@ -1,3 +1,5 @@
 FROM cassandra
 
 COPY wait-for-it.sh .
+COPY commands.cql .
+COPY queries.cql .
