@@ -24,9 +24,15 @@ lab3:
 	&& docker-compose run cqlsh bin/bash -c "cqlsh lab3 -f queries.cql" \
 	cd $(ROOT_DIR);
 
+lab4:
+	cd labs/lab4; \
+	docker-compose up -d; \
+	cd $(ROOT_DIR);
+
+
 
 clean:
-	for n in 1 2 3; do \
+	for n in {1..4}; do \
 		cd "labs/lab$$n"; \
 		pwd; \
 		docker-compose down; \

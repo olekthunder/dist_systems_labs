@@ -1,0 +1,47 @@
+version: "3"
+services:
+  mongo1:
+    hostname: m1
+    container_name: m1
+    image: mongo:4.2.7
+    expose:
+      - 8001
+    ports:
+      - 8001:8001
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--port", "8001" ]
+  mongo2:
+    hostname: m2
+    container_name: m2
+    image: mongo:4.2.7
+    expose:
+      - 8002
+    ports:
+      - 8002:8002
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--port", "8002" ]
+  mongo3:
+    hostname: m3
+    container_name: m3
+    image: mongo
+    expose:
+      - 8003
+    ports:
+      - 8003:8003
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--port", "8003" ]
+  mongosetup:
+    image: mongo:4.2.7
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+    volumes:
+      - .:/scripts
+    restart: "no"
+    entrypoint: [ "bash", "/scripts/mongo_setup.sh"]
+
+networks:
+  default:
+    name:
+      mongo-rs
