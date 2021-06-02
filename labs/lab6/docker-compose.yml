@@ -1,0 +1,59 @@
+version: "3"
+services:
+  m1:
+    container_name: m1
+    image: mongo:4.2.7
+    expose:
+      - 8001
+    ports:
+      - 8001:8001
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--shardsvr", "--port", "8001", "--replSet", "rs1" ]
+  m2:
+    container_name: m2
+    image: mongo:4.2.7
+    expose:
+      - 8002
+    ports:
+      - 8002:8002
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--shardsvr", "--port", "8002", "--replSet", "rs2" ]
+  m3:
+    container_name: m3
+    image: mongo:4.2.7
+    expose:
+      - 8003
+    ports:
+      - 8003:8003
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--shardsvr", "--port", "8003", "--replSet", "rs3" ]
+  mc:
+    container_name: mc
+    image: mongo:4.2.7
+    expose:
+      - 8010
+    ports:
+      - 8010:8010
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--configsvr", "--port", "8010", "--replSet", "confg" ]
+  mrouter:
+    container_name: mrouter
+    image: mongo:4.2.7
+    expose: 
+      - 8100
+    ports:
+      - 8100:8100
+    restart: always
+    entrypoint: [ "/usr/bin/mongos", "--bind_ip_all", "--port", "8100", "--configdb", "confg/mc:8010" ]
+  mongosetup:
+    image: mongo:4.2.7
+    depends_on:
+      - m1
+      - m2
+      - m3
+      - mc
+      - mrouter
+    volumes:
+      - .:/scripts
+    restart: "no"
+    entrypoint: [ "bash", "/scripts/mongo_setup.sh"]
