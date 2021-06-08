@@ -20,14 +20,42 @@ db.orders.mapReduce(
 );
 db.orders.mapReduce(
     function() { emit(1, this.total_sum || 0); },
-    function(k, v) { return Array.avg(v); },
-    { out: "avg_order_sum" },
-);
+    function(k, v) {
+        return v.reduce(
+            (s, i) => ({
+                sum: s.sum + i,
+                count: s.count + 1
+            }),
+            {sum: 0, count: 0}
+        );
+     },
+    {
+        out: {inline: 1},
+        finalize: function(k, v) {
+            v.avg = v.count && (v.sum / v.count);
+            return v.avg;
+        },
+    }
+).results[0];
 db.orders.mapReduce(
     function() { emit(this.customer.name + " " + this.customer.surname, this.total_sum || 0); },
-    function(k, v) { return Array.avg(v); },
-    { out: "customer_avg_sum" },
-);
+    function(k, v) {
+        return v.reduce(
+            (s, i) => ({
+                sum: s.sum + i,
+                count: s.count + 1
+            }),
+            {sum: 0, count: 0}
+        );
+     },
+    {
+        out: {inline: 1},
+        finalize: function(k, v) {
+            v.avg = v.count && (v.sum / v.count);
+            return v.avg;
+        },
+    }
+).results;
 db.orders.mapReduce(
     function() { this.order_items_id.forEach((i) => emit(i, this.customer.name + " " + this.customer.surname)) },
     function(k, v) { return Array.from(new Set(v)).length; },
