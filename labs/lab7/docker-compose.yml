@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  duhast:
+    image: mongo
+    container_name: duhast
+  qqq:
+    container_name: qqq
+    image: mongo
